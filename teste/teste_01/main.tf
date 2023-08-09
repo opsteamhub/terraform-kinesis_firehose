@@ -5,8 +5,38 @@ module "firehose_to_opentelemetry" {
   # firehose_name = "otel_stack_monitoring"
   # url_endpoint_configuration = "https://otel-2-test.ops.team"
 
+  s3_bucket_name = "otel-poc"
+
   config = {
-    "teste01" = {
+    "firehose01" = {
+
+
+      cloudwatch_metric_stream = null
+
+      kinesis_firehose_delivery_stream = {
+
+        destination = "http_endpoint"
+
+        name = "Teste123"
+
+        http_endpoint_configuration = {
+          url = "https://www.abc123.com.br"
+
+          name = "name002"
+
+          access_key = "my-key123"
+
+          buffering_size     = 30
+          buffering_interval = 500
+
+
+        }
+
+      },
+      # "firehose02" = {
+
+      # }
+
     }
   }
 }
