@@ -41,7 +41,7 @@ variable "config" {
 
               role_arn = optional(string) # ARN of the IAM role that this metric stream will use to access Amazon Kinesis Firehose resources.
 
-              output_format = optional(string) #  Output format for the stream. Possible values are json and opentelemetry0.7.
+              output_format = optional(string) #  Output format for the stream. Possible values are json and opentelemetry
 
               exclude_filter = optional( #   List of exclusive metric filters. If you specify this parameter, the stream sends metrics from all metric namespaces except for the namespaces and the conditional metric names that you specify here. If you don't specify metric names or provide empty metric names whole metric namespace is excluded. Conflicts with include_filter.
                 list(
@@ -58,12 +58,13 @@ variable "config" {
                 list(
                   object(
                     {
-                      namespace    = optional(string) #  Name of the metric namespace in the filter.
-                      metric_names = optional(string) # An array that defines the metrics you want to include for this metric namespace
+                      namespace    = optional(string)      #  Name of the metric namespace in the filter.
+                      metric_names = optional(set(string)) # An array that defines the metrics you want to include for this metric namespace
                     }
                   )
                 )
               )
+
               name = optional(string) #   Friendly name of the metric stream. If omitted, Terraform will assign a random, unique name. Conflicts with name_prefix.
 
               name_prefix = optional(string) #   Creates a unique friendly name beginning with the specified prefix. Conflicts with name.

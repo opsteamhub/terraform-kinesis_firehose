@@ -11,7 +11,29 @@ module "firehose_to_opentelemetry" {
     "firehose01" = {
 
 
-      cloudwatch_metric_stream = null
+      cloudwatch_metric_stream = {
+        name = "otel-monitoring"
+
+        output_format = "json"
+
+        include_filter = [
+          {
+            namespace    = "AWS/EC2"
+            metric_names = ["CPUUtilization", "NetworkOut"]
+          },
+
+          {
+            namespace    = "AWS/EBS"
+            metric_names = []
+          },
+
+          {
+            namespace    = "AWS/RDS"
+            metric_names = []
+          }
+        ]
+      }
+
 
       kinesis_firehose_delivery_stream = {
 
@@ -42,7 +64,15 @@ module "firehose_to_opentelemetry" {
 }
 
 
-
 output "my_config" {
   value = module.firehose_to_opentelemetry.my_config
+}
+
+output "firehose_data" {
+  value = module.firehose_to_opentelemetry.firehose_data
+}
+
+
+output "cloudwatch_data" {
+  value = module.firehose_to_opentelemetry.cloudwatch_data
 }
