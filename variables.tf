@@ -212,13 +212,19 @@ variable "config" {
 
                     buffering_interval = optional(string) #  Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination. The default value is 300 (5 minutes).
 
-                    cloudwatch_logging_options = optional(string) # The CloudWatch Logging Options for the delivery stream. More details are given below.
-
                     processing_configuration = optional(string) #  The data processing configuration. More details are given below.
 
                     request_configuration = optional(string) # The request configuration. More details are given below.
 
                     retry_duration = optional(string) #  Total amount of seconds Firehose spends on retries. This duration starts after the initial attempt fails, It does not include the time periods during which Firehose waits for acknowledgment from the specified destination after each attempt. Valid values between 0 and 7200. Default is 300.
+
+                    cloudwatch_logging_options = optional(
+                      object({
+                        enabled         = optional(bool)
+                        log_group_name  = optional(string)
+                        log_stream_name = optional(string)
+                      })
+                    )
                   }
                 )
               )

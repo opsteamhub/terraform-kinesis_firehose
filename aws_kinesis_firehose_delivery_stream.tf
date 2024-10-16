@@ -37,11 +37,12 @@ resource "aws_kinesis_firehose_delivery_stream" "kinesis_firehose_delivery_strea
       kms_key_arn         = try(each.value["http_endpoint_configuration"]["s3_configuration"]["kms_key_arn"], null)
     }
 
-    # cloudwatch_logging_options = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"], null)
+    cloudwatch_logging_options {
+      enabled         = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["enabled"], false)
+      log_group_name  = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["log_group_name"], null)
+      log_stream_name = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["log_stream_name"], null)
+    }
 
-    # processing_configuration = try(each.value["http_endpoint_configuration"]["processing_configuration"], null)
-
-    # request_configuration = try(each.value["http_endpoint_configuration"]["request_configuration"], null)
 
 
 
