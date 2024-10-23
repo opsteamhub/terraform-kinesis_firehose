@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "",
+            "Sid": "GluePermissions",
             "Effect": "Allow",
             "Action": [
                 "glue:GetTable",
@@ -10,24 +10,24 @@
                 "glue:GetTableVersions"
             ],
             "Resource": [
-                "arn:aws:glue:us-east-1:288109893636:catalog",
-                "arn:aws:glue:us-east-1:288109893636:database/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%",
-                "arn:aws:glue:us-east-1:288109893636:table/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+                "arn:aws:glue:us-east-1:*:catalog",
+                "arn:aws:glue:us-east-1:*:database/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%",
+                "arn:aws:glue:us-east-1:*:table/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
             ]
         },
         {
-            "Sid": "",
+            "Sid": "GlueSchemaPermissions",
             "Effect": "Allow",
             "Action": [
                 "glue:GetSchemaByDefinition"
             ],
             "Resource": [
-                "arn:aws:glue:us-east-1:288109893636:registry/*",
-                "arn:aws:glue:us-east-1:288109893636:schema/*"
+                "arn:aws:glue:us-east-1:*:registry/*",
+                "arn:aws:glue:us-east-1:*:schema/*"
             ]
         },
         {
-            "Sid": "",
+            "Sid": "GlueSchemaVersion",
             "Effect": "Allow",
             "Action": [
                 "glue:GetSchemaVersion"
@@ -37,7 +37,7 @@
             ]
         },
         {
-            "Sid": "",
+            "Sid": "S3Permissions",
             "Effect": "Allow",
             "Action": [
                 "s3:*"
@@ -48,22 +48,23 @@
             ]
         },
         {
-            "Sid": "",
+            "Sid": "LambdaPermissions",
             "Effect": "Allow",
             "Action": [
                 "lambda:InvokeFunction",
                 "lambda:GetFunctionConfiguration"
             ],
-            "Resource": "arn:aws:lambda:us-east-1:288109893636:function:%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+            "Resource": "arn:aws:lambda:us-east-1:*:function:%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
         },
         {
+            "Sid": "KMSForS3",
             "Effect": "Allow",
             "Action": [
                 "kms:GenerateDataKey",
                 "kms:Decrypt"
             ],
             "Resource": [
-                "arn:aws:kms:us-east-1:288109893636:key/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+                "arn:aws:kms:us-east-1:*:key/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
             ],
             "Condition": {
                 "StringEquals": {
@@ -78,18 +79,19 @@
             }
         },
         {
-            "Sid": "",
+            "Sid": "LogsPermissions",
             "Effect": "Allow",
             "Action": [
+                "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:us-east-1:288109893636:log-group:/aws/kinesisfirehose/*:log-stream:*",
-                "arn:aws:logs:us-east-1:288109893636:log-group:%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%:log-stream:*"
+                "arn:aws:logs:us-east-1:*:log-group:/aws/kinesisfirehose/*:log-stream:*",
+                "arn:aws:logs:us-east-1:*:log-group:/aws/kinesisfirehose/firehose-to-otel:log-stream:*"
             ]
         },
         {
-            "Sid": "",
+            "Sid": "KinesisPermissions",
             "Effect": "Allow",
             "Action": [
                 "kinesis:DescribeStream",
@@ -97,22 +99,23 @@
                 "kinesis:GetRecords",
                 "kinesis:ListShards"
             ],
-            "Resource": "arn:aws:kinesis:us-east-1:288109893636:stream/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+            "Resource": "arn:aws:kinesis:us-east-1:*:stream/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
         },
         {
+            "Sid": "KMSForKinesis",
             "Effect": "Allow",
             "Action": [
                 "kms:Decrypt"
             ],
             "Resource": [
-                "arn:aws:kms:us-east-1:288109893636:key/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+                "arn:aws:kms:us-east-1:*:key/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
             ],
             "Condition": {
                 "StringEquals": {
                     "kms:ViaService": "kinesis.us-east-1.amazonaws.com"
                 },
                 "StringLike": {
-                    "kms:EncryptionContext:aws:kinesis:arn": "arn:aws:kinesis:us-east-1:288109893636:stream/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+                    "kms:EncryptionContext:aws:kinesis:arn": "arn:aws:kinesis:us-east-1:*:stream/%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
                 }
             }
         }

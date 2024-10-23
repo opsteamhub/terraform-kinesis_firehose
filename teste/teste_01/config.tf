@@ -2,8 +2,8 @@ terraform {
   required_version = ">=1.4.5"
 
   backend "s3" {
-    bucket = "opsteam-terraform-modules-tfstate-dev"
-    key    = "terraform/OpsTeamModules/Kinesis.tfstate"
+    bucket = ""
+    key    = ""
     region = "us-east-1"
   }
 }
