@@ -1,19 +1,16 @@
-output "my_config" {
-  value = var.config
+# outputs.tf no módulo "terraform-kinesis_firehose"
+
+output "kinesis_firehose_delivery_stream_names" {
+  value       = [for kfd in aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream : kfd.name]
+  description = "Nomes do Kinesis Firehose Delivery Stream"
 }
 
-output "cloudwatch_data" {
-  value = { for k, v in aws_cloudwatch_metric_stream.cloudwatch_metric_stream : k => try(v, null) }
+output "cloudwatch_metric_stream_names" {
+  value       = [for cms in aws_cloudwatch_metric_stream.cloudwatch_metric_stream : cms.name]
+  description = "Nomes do CloudWatch Metric Stream"
 }
 
-output "firehose_data" {
-  value = {
-    for k, v in aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream :
-    k => {
-      arn         = v.arn
-      destination = v.destination
-      name        = v.name
-    }
-  }
-  sensitive = false
+output "http_endpoint_urls" {
+  value       = [for kfd in aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream : kfd.destination]
+  description = "URLs dos endpoints HTTP configurados"
 }

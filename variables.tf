@@ -19,6 +19,28 @@
 #   type        = string
 # }
 
+variable "log_stream_name" {
+  description = "Nome do log stream para CloudWatch"
+  type        = string
+  default     = "DestinationDelivery"
+}
+
+
+
+variable "log_retention_in_days" {
+  description = "Número de dias para reter os logs"
+  type        = number
+  default     = 14
+}
+
+variable "http_endpoint_name" {
+  description = "Nome padrão para o endpoint HTTP"
+  type        = string
+  default     = "HTTP endpoint"
+}
+
+
+# variables.tf no módulo
 variable "s3_bucket_name" {
   description = "Bucket usada para reprocessar dados do firehose"
   type        = string

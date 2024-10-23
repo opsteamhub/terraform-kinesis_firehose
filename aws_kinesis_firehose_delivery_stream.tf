@@ -12,7 +12,7 @@ resource "aws_kinesis_firehose_delivery_stream" "kinesis_firehose_delivery_strea
   http_endpoint_configuration {
     url = try(each.value["http_endpoint_configuration"]["url"], null) # "https://www.x.com.br"
 
-    name = try(each.value["http_endpoint_configuration"]["name"], null) #  "New teste"
+    name = coalesce(each.value["http_endpoint_configuration"]["name"], var.http_endpoint_name)
 
     access_key = try(each.value["http_endpoint_configuration"]["access_key"], null) #  "my-key"
 
@@ -39,13 +39,12 @@ resource "aws_kinesis_firehose_delivery_stream" "kinesis_firehose_delivery_strea
 
     cloudwatch_logging_options {
       enabled         = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["enabled"], false)
-      log_group_name  = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["log_group_name"], null)
-      log_stream_name = try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["log_stream_name"], null)
+      log_group_name  = try(aws_cloudwatch_log_group.firehose_log_group[each.key].name, null)
+      log_stream_name = coalesce(try(each.value["http_endpoint_configuration"]["cloudwatch_logging_options"]["log_stream_name"], null), var.log_stream_name)
     }
-
-
-
-
   }
 
+  depends_on = [
+    aws_cloudwatch_log_group.firehose_log_group
+  ]
 }

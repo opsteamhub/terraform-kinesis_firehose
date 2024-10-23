@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_stream" "cloudwatch_metric_stream" {
   depends_on = [
-    resource.aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream
+    aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream
   ]
 
   for_each = { for k, v in var.config :
@@ -13,7 +13,6 @@ resource "aws_cloudwatch_metric_stream" "cloudwatch_metric_stream" {
 
   firehose_arn = aws_kinesis_firehose_delivery_stream.kinesis_firehose_delivery_stream[each.key].arn
 
-
   output_format = try(each.value["output_format"], "json")
 
   dynamic "include_filter" {
@@ -23,5 +22,4 @@ resource "aws_cloudwatch_metric_stream" "cloudwatch_metric_stream" {
       metric_names = try(include_filter.value["metric_names"], null)
     }
   }
-
 }

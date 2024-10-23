@@ -5,32 +5,28 @@ module "firehose_to_opentelemetry" {
   # firehose_name = "otel_stack_monitoring"
   # url_endpoint_configuration = "https://otel-2-test.ops.team"
 
-  s3_bucket_name = "otel-poc"
+  s3_bucket_name = ""
 
   config = {
     "firehose01" = {
 
 
       cloudwatch_metric_stream = {
-        name = "otel-monitoring"
+        name = "streams-to-firehose"
 
         output_format = "json"
 
         include_filter = [
           {
-            namespace    = "AWS/EC2"
-            metric_names = ["CPUUtilization", "NetworkOut"]
-          },
+            namespace    = "AWS/WAFV2"
+            metric_names = [] #Todas as Metricas.
 
-          {
-            namespace    = "AWS/EBS"
-            metric_names = []
           },
+          # {
+          #   namespace    = "AWS/S3"
+          #   metric_names = ["NumberOfObjects"]
 
-          {
-            namespace    = "AWS/RDS"
-            metric_names = []
-          }
+          # }
         ]
       }
 
@@ -39,19 +35,23 @@ module "firehose_to_opentelemetry" {
 
         destination = "http_endpoint"
 
-        name = "Teste123"
+        name = "firehose-to-otel"
 
         http_endpoint_configuration = {
-          url = "https://www.abc123.com.br"
+          url = ""
 
-          name = "name002"
+          name = "HTTP endpoint"
 
-          access_key = "my-key123"
+          access_key = ""
 
-          buffering_size     = 30
-          buffering_interval = 500
+          buffering_size     = 5
+          buffering_interval = 60
 
-
+          cloudwatch_logging_options = {
+            enabled         = true
+            log_group_name  = "/aws/kinesisfirehose/firehose-to-otel"
+            log_stream_name = "DestinationDelivery"
+          }
         }
 
       },
@@ -64,15 +64,19 @@ module "firehose_to_opentelemetry" {
 }
 
 
-output "my_config" {
-  value = module.firehose_to_opentelemetry.my_config
-}
+# output "my_config" {
+#   value = module.firehose_to_opentelemetry.my_config
+# }
 
-output "firehose_data" {
-  value = module.firehose_to_opentelemetry.firehose_data
-}
+# output "firehose_data" {
+#   value = module.firehose_to_opentelemetry.firehose_data
+# }
 
 
-output "cloudwatch_data" {
-  value = module.firehose_to_opentelemetry.cloudwatch_data
-}
+# output "cloudwatch_data" {
+#   value = module.firehose_to_opentelemetry.cloudwatch_data
+# }
+
+# output "log_groups_created_by_module" {
+#   value = aws_cloudwatch_log_group.firehose_log_group[*].name
+# }
